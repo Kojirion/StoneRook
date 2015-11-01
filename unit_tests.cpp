@@ -17,9 +17,9 @@ using boost::spirit::qi::lit;
 
 using Iterator = std::string::iterator;
 
-struct EventParser : grammar<Iterator, std::string()>
+struct SiteGrammar : grammar<Iterator, std::string()>
 {
-    EventParser(): base_type(start){
+    SiteGrammar(): base_type(start){
         start = lit("[Site \"") >> +(boost::spirit::qi::alnum | boost::spirit::qi::space)  >> lit("\"]");
     }
 
@@ -28,7 +28,7 @@ struct EventParser : grammar<Iterator, std::string()>
 
 BOOST_AUTO_TEST_CASE(EventName)
 {
-    EventParser parser;
+    SiteGrammar parser;
 
     std::string given("[Site \"Budapest HUN\"]");
 
@@ -40,19 +40,19 @@ BOOST_AUTO_TEST_CASE(EventName)
     BOOST_CHECK_EQUAL(expected, parsed);
 }
 
-namespace DateParserNamespace { BOOST_SPIRIT_TERMINAL(date_) }
+namespace DateGrammarNamespace { BOOST_SPIRIT_TERMINAL(date_) }
 
 namespace boost { namespace spirit
     {
     template <>
-    struct use_terminal<qi::domain, DateParserNamespace::tag::date_>
+    struct use_terminal<qi::domain, DateGrammarNamespace::tag::date_>
             : mpl::true_
     {};
     }}
 
-namespace DateParserNamespace {
-struct DateParser
-      : boost::spirit::qi::primitive_parser<DateParser>
+namespace DateGrammarNamespace {
+struct DateGrammar
+      : boost::spirit::qi::primitive_parser<DateGrammar>
     {
         template <typename Context, typename Iterator>
         struct attribute
@@ -82,7 +82,7 @@ struct DateParser
 
 BOOST_AUTO_TEST_CASE(Date)
 {
-    DateParserNamespace::DateParser parser;
+    DateGrammarNamespace::DateGrammar parser;
 
     using boost::gregorian::date;
 
