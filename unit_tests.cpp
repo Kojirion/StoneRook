@@ -174,8 +174,6 @@ bool isPiece(const Piece& piece)
     return (piece.type != Piece::Type::None) && (piece.type != Piece::Type::Shadow);
 }
 
-
-
 bool isBishopLegal(const Position& position, const Move& move){
     const int deltaRow = move.square_2.row - move.square_1.row;
     const int deltaCol = move.square_2.col - move.square_1.col;
@@ -203,6 +201,40 @@ BOOST_AUTO_TEST_CASE(BishopMove)
     setInitial(position);
     Move move{{0,2},{2,4}};
     BOOST_CHECK(!isBishopLegal(position, move));
+}
+
+bool isRookLegal(const Position& position, const Move& move)
+{
+    using boost::math::sign;
+
+    if (move.square_1.row==move.square_2.row){
+        const int signDiff = sign(move.square_2.col - move.square_1.col);
+        const int maxIt = move.square_2.col - move.square_1.col;
+
+        for (int i=signDiff; i!=maxIt; i+=signDiff){
+            if (isPiece(position({move.square_1.row, move.square_1.col+i})))
+                return false;
+        }
+        return true; //no obstruction
+    }else if (move.square_1.col==move.square_2.col){
+        const int signDiff = sign(move.square_2.row - move.square_1.row);
+        const int maxIt = move.square_2.row - move.square_1.row;
+
+        for (int i=signDiff; i!=maxIt; i+=signDiff){
+            if (isPiece(position({move.square_1.row+i, move.square_1.col})))
+                return false;
+        }
+        return true; //no obstruction
+    }
+    return false; //not in same row nor column
+}
+
+BOOST_AUTO_TEST_CASE(RookMove)
+{
+    Position position;
+    setInitial(position);
+    Move move{{0,0},{5,0}};
+    BOOST_CHECK(!isRookLegal(position, move));
 }
 
 
