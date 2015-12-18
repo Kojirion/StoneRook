@@ -104,6 +104,15 @@ enum class Color{
     Black
 };
 
+Color operator !(Color rhs)
+{
+    if (rhs==Color::White)
+        return Color::Black;
+    else{
+        assert(rhs==Color::Black);
+        return Color::White;
+    }
+}
 
 
 struct Piece{
@@ -121,6 +130,11 @@ struct Piece{
     Color color;
     Type type;
 };
+
+bool operator ==(const Piece &lhs, const Piece &rhs)
+{
+    return (lhs.color == rhs.color) && (lhs.type == rhs.type);
+}
 
 struct Square{
     int row, col;
@@ -235,6 +249,51 @@ BOOST_AUTO_TEST_CASE(RookMove)
     setInitial(position);
     Move move{{0,0},{5,0}};
     BOOST_CHECK(!isRookLegal(position, move));
+}
+
+bool isPawnLegal(const Position& position, const Move& move)
+{
+    Piece noPiece{Color::None, Piece::Type::None};
+    auto piece = position(move.square_1);
+
+    if (position(move.square_1).color == Color::White){ //white pawn
+        if ((move.square_1.row==1)&&(move.square_2.row==3)&&(move.square_1.col==move.square_2.col)){ //double advance
+            if ((position(move.square_2) == noPiece) && (position({2, move.square_2.col}) == noPiece))
+                return true;
+        }else{
+            if (move.square_1.row+1==move.square_2.row){
+                if (move.square_1.col==move.square_2.col)
+                    if (position(move.square_2) == noPiece)
+                        return true;
+                if ((move.square_1.col+1==move.square_2.col)||(move.square_1.col-1==move.square_2.col))
+                    if (piece.color == !position(move.square_2).color)
+                        return true;
+            }
+        }
+    }else{
+        if ((move.square_1.row==6)&&(move.square_2.row==4)&&(move.square_1.col==move.square_2.col)){ //double advance
+            if ((position(move.square_2) == noPiece) && (position({5, move.square_2.col}) == noPiece))
+                return true;
+        }else{
+            if (move.square_1.row-1==move.square_2.row){
+                if (move.square_1.col==move.square_2.col)
+                    if (position(move.square_2) == noPiece)
+                        return true;
+                if ((move.square_1.col+1==move.square_2.col)||(move.square_1.col-1==move.square_2.col))
+                    if (piece.color == !position(move.square_2).color)
+                        return true;
+            }
+        }
+    }
+    return false;
+}
+
+BOOST_AUTO_TEST_CASE(PawnMove)
+{
+    Position position;
+    setInitial(position);
+    Move move{{1,0},{2,0}};
+    BOOST_CHECK(isPawnLegal(position, move));
 }
 
 
