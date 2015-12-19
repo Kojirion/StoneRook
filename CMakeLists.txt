@@ -7,7 +7,10 @@ find_package(Boost COMPONENTS unit_test_framework date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(HDRS
-
+    SiteGrammar.hpp
+    DateGrammar.hpp
+    Common.hpp
+    MoveValidation.hpp
 )
 
 set(SRCS
