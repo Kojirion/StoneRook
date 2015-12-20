@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 
 enum class Color{
     None,
@@ -19,7 +20,7 @@ Color operator !(Color rhs)
 
 struct Piece{
     enum class Type{
-        Rook,
+        Rook = 0,
         Knight,
         Bishop,
         Queen,
@@ -41,6 +42,14 @@ bool isPiece(const Piece& piece)
 bool operator ==(const Piece &lhs, const Piece &rhs)
 {
     return (lhs.color == rhs.color) && (lhs.type == rhs.type);
+}
+
+std::ostream& operator<<(std::ostream& s, const Piece& piece){
+    if (piece.color == Color::Black)
+        s << '*';
+
+    static const char typeMap[] = "RNBQKP  ";
+    s << typeMap[static_cast<int>(piece.type)];
 }
 
 struct Square{
