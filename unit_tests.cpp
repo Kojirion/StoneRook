@@ -8,9 +8,9 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 
-#include "boost/date_time/gregorian/gregorian.hpp"
 
-#include <boost/math/special_functions/sign.hpp>
+
+
 
 #include "SiteGrammar.hpp"
 #include "DateGrammar.hpp"
@@ -57,14 +57,11 @@ BOOST_AUTO_TEST_CASE(Date)
 }
 
 
-
-
-
 BOOST_AUTO_TEST_CASE(BishopMove)
 {
     Position position;
     setInitial(position);
-    Move move{{0,2},{2,4}};
+    Move move{{Square::c,1},{Square::e, 3}};
     BOOST_CHECK(!isBishopLegal(position, move));
 }
 
@@ -74,7 +71,7 @@ BOOST_AUTO_TEST_CASE(RookMove)
 {
     Position position;
     setInitial(position);
-    Move move{{0,0},{5,0}};
+    Move move{{Square::a,1},{Square::a,6}};
     BOOST_CHECK(!isRookLegal(position, move));
 }
 
@@ -84,8 +81,17 @@ BOOST_AUTO_TEST_CASE(PawnMove)
 {
     Position position;
     setInitial(position);
-    Move move{{1,0},{2,0}};
+    Move move{{Square::a,2},{Square::a,3}};
     BOOST_CHECK(isPawnLegal(position, move));
+}
+
+BOOST_AUTO_TEST_CASE(ParseAmbiguousMove)
+{
+    Position position;
+    //set up position where a knight on f6 is pinned and Nd7 is played
+    //it will be necessary to deduce b8-d7 from Nd7
+
+
 }
 
 
