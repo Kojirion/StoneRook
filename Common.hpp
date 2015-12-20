@@ -44,7 +44,19 @@ bool operator ==(const Piece &lhs, const Piece &rhs)
 }
 
 struct Square{
-    int row, col;
+    enum Column{
+        a = 0,
+        b = 1,
+        c = 2,
+        d = 3,
+        e = 4,
+        f = 5,
+        g = 6,
+        h = 7
+    };
+
+    Column column;
+    int row;
 };
 
 struct Move{
@@ -56,10 +68,10 @@ struct Position{
 
     const Piece& operator ()(const Square& square) const
     {
-        assert((square.row>=0)&&(square.row<8)&&
-                         (square.col>=0)&&(square.col<8));
+        assert((square.row>0)&&(square.row<=8)&&
+                         (square.column>=0)&&(square.column<8));
 
-        return m_cells[square.row*8+square.col];
+        return m_cells[(square.row-1)*8+square.column];
     }
 };
 

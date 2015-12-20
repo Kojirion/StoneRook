@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/spirit/include/qi.hpp>
+#include "boost/date_time/gregorian/gregorian.hpp"
 
 namespace DateGrammarNamespace { BOOST_SPIRIT_TERMINAL(date_) }
 
