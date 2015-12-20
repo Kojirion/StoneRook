@@ -122,15 +122,17 @@ void setInitial(Position& position){
 
 template <typename OutputIterator>
 struct PositionGrammar : boost::spirit::karma::grammar<OutputIterator, std::array<Piece, 64>()>
-{
+{    
     PositionGrammar() : PositionGrammar::base_type(start, "PositionGrammar")
     {
         using namespace boost::spirit::karma;
-        start = columns(8)[*stream];
+        piece = "| " << stream;
+        auto g = lit("|\n|---+---+---+---+---+---+---+---|\n");
+        start = "---------------------------------\n" << columns(8,g)[*piece];
     }
 
     boost::spirit::karma::rule<OutputIterator, std::array<Piece, 64>()> start;
-
+    boost::spirit::karma::rule<OutputIterator, Piece()> piece;
 };
 
 void print(const Position& position){
