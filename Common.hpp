@@ -50,6 +50,8 @@ bool operator ==(const Piece &lhs, const Piece &rhs)
 std::ostream& operator<<(std::ostream& s, const Piece& piece){
     if (piece.color == Color::Black)
         s << '*';
+    else
+        s << ' ';
 
     static const char typeMap[] = "RNBQKP  ";
     s << typeMap[static_cast<int>(piece.type)];
@@ -123,7 +125,8 @@ struct PositionGrammar : boost::spirit::karma::grammar<OutputIterator, std::arra
 {
     PositionGrammar() : PositionGrammar::base_type(start, "PositionGrammar")
     {
-        start = *boost::spirit::karma::stream;
+        using namespace boost::spirit::karma;
+        start = columns(8)[*stream];
     }
 
     boost::spirit::karma::rule<OutputIterator, std::array<Piece, 64>()> start;
