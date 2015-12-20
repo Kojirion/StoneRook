@@ -1,5 +1,6 @@
 #pragma once
 #include <ostream>
+#include <boost/spirit/include/karma.hpp>
 
 enum class Color{
     None,
@@ -44,6 +45,8 @@ bool operator ==(const Piece &lhs, const Piece &rhs)
     return (lhs.color == rhs.color) && (lhs.type == rhs.type);
 }
 
+
+
 std::ostream& operator<<(std::ostream& s, const Piece& piece){
     if (piece.color == Color::Black)
         s << '*';
@@ -84,6 +87,10 @@ struct Position{
     }
 };
 
+std::ostream& operator<<(std::ostream& s, const Position& position){
+    //copy()
+}
+
 void setInitial(Position& position){
     position.m_cells[0] = {Color::White, Piece::Type::Rook};
     position.m_cells[1] = {Color::White, Piece::Type::Knight};
@@ -109,4 +116,28 @@ void setInitial(Position& position){
             position.m_cells[j*8+i] = {Color::None, Piece::Type::None};
         }
     }
+}
+
+template <typename OutputIterator>
+struct PositionGrammar : boost::spirit::karma::grammar<OutputIterator, std::array<Piece, 64>()>
+{
+    PositionGrammar() : PositionGrammar::base_type(start, "PositionGrammar")
+    {
+        start = *boost::spirit::karma::stream;
+    }
+
+    boost::spirit::karma::rule<OutputIterator, std::array<Piece, 64>()> start;
+
+};
+
+void print(const Position& position){
+    using Iterator = std::ostream_iterator<char>;
+
+    Iterator sink(std::cout, "");
+
+    PositionGrammar<Iterator> grammar;
+
+    boost::spirit::karma::generate(sink,
+                                   grammar,
+                                   position.m_cells);
 }

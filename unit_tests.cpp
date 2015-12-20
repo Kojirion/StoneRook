@@ -17,6 +17,9 @@
 
 #include "MoveValidation.hpp"
 
+#include <iostream>
+#include <numeric>
+
 using boost::spirit::qi::grammar;
 using boost::spirit::qi::rule;
 
@@ -91,7 +94,9 @@ BOOST_AUTO_TEST_CASE(ParseAmbiguousMove)
     //set up position where a knight on f6 is pinned and Nd7 is played
     //it will be necessary to deduce b8-d7 from Nd7
 
+    setInitial(position);
 
+    print(position);
 }
 
 
