@@ -93,10 +93,22 @@ BOOST_AUTO_TEST_CASE(ParseAmbiguousMove)
     Position position;
     //set up position where a knight on f6 is pinned and Nd7 is played
     //it will be necessary to deduce b8-d7 from Nd7
+}
 
-    setInitial(position);
+BOOST_AUTO_TEST_CASE(FEN)
+{
+    FENGrammar parser;
 
-    print(position);
+    std::string given("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+
+    Position expected, parsed;
+    setInitial(expected);
+
+    bool success = boost::spirit::qi::parse(given.begin(), given.end(), parser, parsed);
+
+    BOOST_CHECK(success);
+    BOOST_CHECK_EQUAL(expected, parsed);
+
 }
 
 
