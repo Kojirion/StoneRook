@@ -11,6 +11,7 @@ set(HDRS
     DateGrammar.hpp
     Common.hpp
     MoveValidation.hpp
+    FENGrammar.hpp
 )
 
 set(SRCS

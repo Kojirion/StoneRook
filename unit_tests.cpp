@@ -8,6 +8,8 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 
+#include "FENGrammar.hpp"
+
 
 
 
@@ -99,15 +101,29 @@ BOOST_AUTO_TEST_CASE(FEN)
 {
     FENGrammar parser;
 
-    std::string given("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    //std::string given("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-    Position expected, parsed;
-    setInitial(expected);
+    std::string given("rnbqkbnr");
+
+    //Position expected, parsed;
+    Row expected(8), parsed;
+    //setInitial(expected);
+
+    expected[0] = {Color::Black, Piece::Type::Rook};
+    expected[1] = {Color::Black, Piece::Type::Knight};
+    expected[2] = {Color::Black, Piece::Type::Bishop};
+    expected[3] = {Color::Black, Piece::Type::Queen};
+    expected[4] = {Color::Black, Piece::Type::King};
+    expected[5] = {Color::Black, Piece::Type::Bishop};
+    expected[6] = {Color::Black, Piece::Type::Knight};
+    expected[7] = {Color::Black, Piece::Type::Rook};
+
 
     bool success = boost::spirit::qi::parse(given.begin(), given.end(), parser, parsed);
 
     BOOST_CHECK(success);
-    BOOST_CHECK_EQUAL(expected, parsed);
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                  parsed.begin(), parsed.end());
 
 }
 

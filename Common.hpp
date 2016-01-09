@@ -45,6 +45,11 @@ bool operator ==(const Piece &lhs, const Piece &rhs)
     return (lhs.color == rhs.color) && (lhs.type == rhs.type);
 }
 
+bool operator !=(const Piece& lhs, const Piece &rhs)
+{
+    return !(lhs==rhs);
+}
+
 
 
 std::ostream& operator<<(std::ostream& s, const Piece& piece){
