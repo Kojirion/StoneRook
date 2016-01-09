@@ -103,26 +103,27 @@ BOOST_AUTO_TEST_CASE(FEN)
 
     //std::string given("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-    std::string given("rnbqkbnr");
+    std::string given("RNBQKBNR/PPPPPPPP/--------/--------/--------/--------/pppppppp/rnbqkbnr/");
 
-    //Position expected, parsed;
-    Row expected(8), parsed;
-    //setInitial(expected);
+    Position expected;//, parsed;
+    std::vector<Piece> parsed;
+    //Row expected(8), parsed;
+    setInitial(expected);
 
-    expected[0] = {Color::Black, Piece::Type::Rook};
-    expected[1] = {Color::Black, Piece::Type::Knight};
-    expected[2] = {Color::Black, Piece::Type::Bishop};
-    expected[3] = {Color::Black, Piece::Type::Queen};
-    expected[4] = {Color::Black, Piece::Type::King};
-    expected[5] = {Color::Black, Piece::Type::Bishop};
-    expected[6] = {Color::Black, Piece::Type::Knight};
-    expected[7] = {Color::Black, Piece::Type::Rook};
+//    expected[0] = {Color::Black, Piece::Type::Rook};
+//    expected[1] = {Color::Black, Piece::Type::Knight};
+//    expected[2] = {Color::Black, Piece::Type::Bishop};
+//    expected[3] = {Color::Black, Piece::Type::Queen};
+//    expected[4] = {Color::Black, Piece::Type::King};
+//    expected[5] = {Color::Black, Piece::Type::Bishop};
+//    expected[6] = {Color::Black, Piece::Type::Knight};
+//    expected[7] = {Color::Black, Piece::Type::Rook};
 
 
     bool success = boost::spirit::qi::parse(given.begin(), given.end(), parser, parsed);
 
     BOOST_CHECK(success);
-    BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected.m_cells.begin(), expected.m_cells.end(),
                                   parsed.begin(), parsed.end());
 
 }
